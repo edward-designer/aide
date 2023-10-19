@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
-import robotPic from "./ai.jpeg";
+import robotPic from "@/public/ai.jpeg";
 import previewPic from "@/public/dashboard-preview.jpg";
 import uploadPic from "@/public/file-upload-preview.jpg";
 
@@ -28,13 +28,13 @@ export default function Home() {
           </p>
         </div>
         <h1 className="mt-lg max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl">
-          Chat with your <span className="text-accent/100">documents</span> via
-          AI for FREE.
+          Chat with AI on your{" "}
+          <span className="text-accent/100">Documents</span> with ease.
         </h1>
         <p className="mt-lg max-w-prose text-text-primary sm:text-lg">
-          AIDe is your 24/7 personal assistant, allowing you to chat with any
-          documents using latest AI technology. Simply upload your file and
-          start asking questions right away!
+          AIDe is your hard working 24/7 personal assistant, empowering you with
+          blazingly fast AI analysis of any documents via a chat interface.
+          Easily upload your file and start asking questions right away!
         </p>
         <div className="group">
           <Link
@@ -48,7 +48,7 @@ export default function Home() {
           >
             <div className="absolute inset-0 w-0 bg-accent/100 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
             <span className="z-10 flex-centered flex-row">
-              Free Trial <ArrowRight className="ml-4 h-lg w-lg" />
+              Start for FREE <ArrowRight className="ml-4 h-lg w-lg" />
             </span>
           </Link>
           <Image
@@ -63,14 +63,15 @@ export default function Home() {
           alt="preview of the app"
           className="mt-36 lg:mt-48 border lg:border-[20px] border-primary/10 rounded-xl shadow-inner backdrop-blur-md"
         />
-        <div className="mt-96 mx-auto my-lg max-w-5xl sm:mt-xl">
+        <div className="mt-16 lg:mt-48 mx-auto my-lg max-w-5xl sm:mt-xl">
           <div className="mb-md px-md lg:px-lg">
             <div className="mx-auto max-w-2xl sm:text-center">
               <h2 className="mt-sm font-bold text-4xl text-primary/90 sm:text-5xl">
-                Start chatting in minutes
+                Start chatting in a minute
               </h2>
               <p className="mt-lg max-w-prose text-text-primary sm:text-lg">
-                With AIDe, chatting to your source files has never been easier.
+                With AIDe, chatting with your document files has never been
+                easier.
               </p>
             </div>
           </div>
@@ -85,14 +86,8 @@ export default function Home() {
                 Sign up for an account
               </span>
               <span className="mt-2 text-zinc-700">
-                Either starting out with a free plan or choose our{" "}
-                <Link
-                  href="/pricing"
-                  className="text-blue-700 underline underline-offset-2"
-                >
-                  pro plan
-                </Link>
-                .
+                Sign up for our FREE plan. No credit card information will be
+                required.
               </span>
             </div>
           </li>
@@ -104,8 +99,8 @@ export default function Home() {
                 Upload your PDF file
               </span>
               <span className="mt-2 text-zinc-700">
-                We&apos;ll process your file and make it ready for you to chat
-                with.
+                Our AI robot will process your file instantly and it will be
+                ready for chatting in no time.
               </span>
             </div>
           </li>
@@ -117,8 +112,8 @@ export default function Home() {
                 Start asking questions
               </span>
               <span className="mt-2 text-zinc-700">
-                It&apos;s that simple. Try out Quill today - it really takes
-                less than a minute.
+                Ask our AI robot anything about the document. Answers will be
+                shown right away!
               </span>
             </div>
           </li>
