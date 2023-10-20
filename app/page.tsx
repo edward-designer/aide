@@ -53,7 +53,7 @@ export default function Home() {
             href="/dashboard"
             target="_blank"
           >
-            <div className="skew-x-12 absolute inset-0 w-0 bg-gradient-to-r to-primary/100 from-accent/100 duration-300 hover:duration-500 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+            <div className="skew-x-12 absolute inset-0 w-0 bg-gradient-to-r to-primary/100 from-accent/100 duration-300 hover:duration-500 transition-all ease-out group-hover:w-full"></div>
             <span className="z-10 flex-centered flex-row">
               Start for FREE <ArrowRight className="ml-4 h-lg w-lg" />
             </span>

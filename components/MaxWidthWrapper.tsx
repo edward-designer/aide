@@ -9,10 +9,7 @@ interface TMaxWidthWrapper {
 const MaxWidthWrapper = ({ className = "", children }: TMaxWidthWrapper) => {
   return (
     <main
-      className={cn(
-        "mx-auto w-full max-w-screen-xl px-2 md:px-4",
-        className
-      )}
+      className={cn("mx-auto w-full max-w-screen-xl px-2 md:px-4", className)}
     >
       {children}
     </main>

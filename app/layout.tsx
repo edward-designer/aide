@@ -4,6 +4,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import UserAction from "@/components/userAction";
+import Providers from "@/components/Providers";
+
+import "react-loading-skeleton/dist/skeleton.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,17 +23,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="light">
-      <body
-        className={cn(
-          "flex flex-col min-h-screen antialiased grainy",
-          inter.className
-        )}
-      >
-        <Navbar>
-          <UserAction />
-        </Navbar>
-        {children}
-      </body>
+      <Providers>
+        <body
+          className={cn(
+            "flex flex-col min-h-screen antialiased grainy",
+            inter.className
+          )}
+        >
+          <Navbar>
+            <UserAction />
+          </Navbar>
+          {children}
+        </body>
+      </Providers>
     </html>
   );
 }
