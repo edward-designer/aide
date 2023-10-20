@@ -20,7 +20,10 @@ export default function Home() {
         aria-hidden={true}
         className="fixed opacity-50 inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-amber-200 via-violet-600 to-sky-900 pointer-events-none mix-blend-color-burn"
       />
-      <div aria-hidden={true} className="shadow-inner-xl fixed inset-0" />
+      <div
+        aria-hidden={true}
+        className="shadow-inner-xl fixed inset-0 pointer-events-none "
+      />
       <MaxWidthWrapper className="mb-md pt-xl sm:mt-lg flex-centered flex-col text-center">
         <div className="mx-auto px-lg mb-4 flex-centered max-w-fit space-x-sm overflow-hidden rounded-full border border-primary/10 py-sm shadow-md backdrop-blur">
           <p className="text-sm font-semibold text-primary">
@@ -28,13 +31,17 @@ export default function Home() {
           </p>
         </div>
         <h1 className="mt-lg max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl">
-          Chat with AI on your{" "}
-          <span className="text-accent/100">Documents</span> with ease.
+          Chat with AI about your{" "}
+          <span className="bg-gradient-to-r from-primary/100 to-accent/100 bg-clip-text text-transparent">
+            Documents
+          </span>{" "}
+          with ease.
         </h1>
         <p className="mt-lg max-w-prose text-text-primary sm:text-lg">
-          AIDe is your hard working 24/7 personal assistant, empowering you with
-          blazingly fast AI analysis of any documents via a chat interface.
-          Easily upload your file and start asking questions right away!
+          <strong>AIDe</strong> is your hard working 24/7 personal assistant,
+          empowering you with our blazingly fast dedicated AI analysis of any
+          documents via a chat interface. Easily upload your file and start
+          getting answers right away!
         </p>
         <div className="group">
           <Link
@@ -46,7 +53,7 @@ export default function Home() {
             href="/dashboard"
             target="_blank"
           >
-            <div className="absolute inset-0 w-0 bg-accent/100 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+            <div className="skew-x-12 absolute inset-0 w-0 bg-gradient-to-r to-primary/100 from-accent/100 duration-300 hover:duration-500 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
             <span className="z-10 flex-centered flex-row">
               Start for FREE <ArrowRight className="ml-4 h-lg w-lg" />
             </span>

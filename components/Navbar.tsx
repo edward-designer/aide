@@ -6,7 +6,7 @@ import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { cn } from "@/lib/utils";
 
-import logo from "@/public/logo.svg";
+import logo from "@/public/aide-logo.svg";
 import { Button, buttonVariants } from "./ui/button";
 import { ReactNode, useState } from "react";
 
@@ -30,16 +30,17 @@ const Navbar = ({ children }: TNavbar) => {
           <div className="flex h-14 items-center justify-between">
             <Button
               onClick={() => setIsExpanded((isExpanded) => !isExpanded)}
-              className="flex-centered hover:bg-transparent"
+              className="flex-centered hover:bg-transparent hover:scale-110 transition-all origin-left"
               variant="ghost"
+              aria-label={isExpanded ? "close the menu" : "open the menu"}
             >
               <Image
                 priority
                 src={logo}
-                className="w-10 mr-sm relative top-[3px]"
+                className="w-8 mr-sm relative top-[1px]"
                 alt="AIDe AI Document Chatter"
               />
-              <span className="relative text-4xl font-extralight top-1">
+              <span className="relative text-3xl font-extralight top-1">
                 AID<span className="font-normal relative -top-3">e</span>
               </span>
             </Button>
