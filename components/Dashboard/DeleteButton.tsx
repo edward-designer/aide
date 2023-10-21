@@ -12,7 +12,10 @@ const DeleteButton = ({ callback }: TDeleteButton) => {
   const [isClicked, setIsClicked] = useState(false);
   return (
     <Button
-      onClick={callback}
+      onClick={() => {
+        setIsClicked(true);
+        callback();
+      }}
       size="sm"
       className="w-lg h-lg rounded-full p-0 hover:bg-destructive-foreground hover:text-destructive"
       variant="destructive"
