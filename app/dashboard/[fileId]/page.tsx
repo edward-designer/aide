@@ -27,7 +27,7 @@ const Page = async ({ params }: TPage) => {
       <section className="mx-auto w-full max-w-8xl grow lg:flex xl:px-sm">
         <div className="flex-1 xl:flex">
           <div className="px-md py-md sm:px-lg lg:pl-lg xl:flex-1 xl:pl-lg">
-            <PdfRenderer />
+            <PdfRenderer url={file.url} />
           </div>
         </div>
         <div className="shrink-0 flex-[0.75] border-t lg:w-96 lg:border-l lg:border-t-0">

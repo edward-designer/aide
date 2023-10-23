@@ -20,7 +20,7 @@ export const ourFileRouter = {
           key: file.key,
           name: file.name,
           userId: metadata.userId,
-          url: `https://uploadthihng-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+          url: `https://utfs.io/f/${file.key}`,
           uploadStatus: "PROCESSING",
         },
       });
