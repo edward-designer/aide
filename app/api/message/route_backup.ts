@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 import { db } from "@/db";
 import { openAi } from "@/lib/openAi";
 import { pinecone } from "@/lib/pinecone";
@@ -28,11 +26,45 @@ export const POST = async (req: NextRequest) => {
 
   if (!userId) return new Response("Unauthorized", { status: 401 });*/
 
-  const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-    pineconeIndex,
-    filter: { fileId },
-  });
-  const results = await vectorStore.similaritySearch(message, 4);
+  const [file, _, results, prevMessages] = await Promise.all([
+    await db.file.findFirst({
+      where: {
+        id: fileId,
+        userId,
+      },
+    }),
+    await db.message.create({
+      data: {
+        text: message,
+        isUserMessage: true,
+        userId,
+        fileId,
+      },
+    }),
+    new Promise<Record<string, any>[]>(async (resolve) => {
+      const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
+        pineconeIndex,
+        filter: { fileId },
+      });
+      const results = await vectorStore.similaritySearch(message, 4);
+      resolve(results);
+    }),
+    await db.message.findMany({
+      where: {
+        fileId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 6,
+    }),
+  ]);
+
+  if (!file) return new Response("Not found", { status: 404 });
+  const formattedPrevMessages = prevMessages.map((msg) => ({
+    role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
+    content: msg.text,
+  }));
 
   const response = await openAi.chat.completions.create({
     model: "gpt-3.5-turbo",
@@ -50,6 +82,14 @@ export const POST = async (req: NextRequest) => {
         
   \n----------------\n
   
+  PREVIOUS CONVERSATION:
+  ${formattedPrevMessages.map((message) => {
+    if (message.role === "user") return `User: ${message.content}\n`;
+    return `Assistant: ${message.content}\n`;
+  })}
+  
+  \n----------------\n
+  
   CONTEXT:
   ${results.map((r) => r.pageContent).join("\n\n")}
   
@@ -58,7 +98,18 @@ export const POST = async (req: NextRequest) => {
     ],
   });
 
-  const stream = OpenAIStream(response);
+  const stream = OpenAIStream(response, {
+    async onCompletion(completion) {
+      await db.message.create({
+        data: {
+          text: completion,
+          isUserMessage: false,
+          fileId,
+          userId,
+        },
+      });
+    },
+  });
 
   return new StreamingTextResponse(stream);
 };
