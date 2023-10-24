@@ -31,7 +31,7 @@ const PdfRenderer = ({ url }: TPdfRenderer) => {
       <div className="flex-1 w-full max-h-screen">
         <div
           ref={ref}
-          className="w-full h-[calc(100vh-10rem)] max-w-full lg:w-[55vw] py-[1px] overflow-auto"
+          className="w-full h-[calc(100vh-10rem)] max-w-full lg:w-[55vw] py-[1px] overflow-scroll"
         >
           <Document
             loading={
@@ -51,7 +51,7 @@ const PdfRenderer = ({ url }: TPdfRenderer) => {
             file={url}
             className="max-h-full h-full"
           >
-            <div className="flex-centered h-full">
+            <div className="w-fit mx-auto">
               <Page
                 width={width ? width : undefined}
                 pageNumber={curPage}
