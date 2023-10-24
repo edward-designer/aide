@@ -1,6 +1,4 @@
-export const config = {
-  runtime: "edge",
-};
+export const runtime = "edge";
 
 import { db } from "@/db";
 import { openAi } from "@/lib/openAi";
