@@ -4,9 +4,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
-import UserAction from "@/components/userAction";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
+import UserAction from "@/components/UserMenu";
 
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
