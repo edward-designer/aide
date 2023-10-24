@@ -47,7 +47,11 @@ export const ourFileRouter = {
 
         // add metadata
         for (const doc of pageLevelDocs) {
-          doc.metadata = { ...doc.metadata, fileId: createdFIle.id };
+          doc.metadata = {
+            ...doc.metadata,
+            fileId: createdFIle.id,
+            userId: metadata.userId,
+          };
         }
 
         const embeddings = new OpenAIEmbeddings({

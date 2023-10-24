@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
 
   const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
     pineconeIndex,
-    filter: { fileId },
+    filter: { fileId, userId },
   });
   const results = await vectorStore.similaritySearch(message, 4);
 

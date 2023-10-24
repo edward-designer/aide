@@ -1,17 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import DropZone from "react-dropzone";
 
+import { Upload } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { Upload } from "lucide-react";
 
 import { UploadDropZone } from "./UploadDropZone";
 
 const UploadButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   return (
     <>
