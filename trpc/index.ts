@@ -154,6 +154,30 @@ export const appRouter = router({
         nextCursor,
       };
     }),
+
+  addMessage: privateProcedure
+    .input(
+      z.object({
+        message: z.string(),
+        createdAt: z.string(),
+        isUserMessage: z.boolean(),
+        fileId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { fileId, isUserMessage, createdAt, message } = input;
+
+      await db.message.create({
+        data: {
+          text: message,
+          isUserMessage,
+          fileId,
+          userId,
+          createdAt,
+        },
+      });
+    }),
 });
 
 export type AppRouter = typeof appRouter;

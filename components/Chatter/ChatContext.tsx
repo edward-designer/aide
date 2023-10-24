@@ -38,8 +38,16 @@ export const ChatContextProvider = ({
 
   const backupMessage = useRef("");
 
+  const mutation = trpc.addMessage.useMutation();
+
   const { mutate: sendMessage } = useMutation({
     mutationFn: async ({ message }: { message: string }) => {
+      mutation.mutate({
+        fileId,
+        isUserMessage: true,
+        createdAt: new Date().toISOString(),
+        message,
+      });
       const response = await fetch("/api/message", {
         method: "POST",
         body: JSON.stringify({
@@ -160,6 +168,13 @@ export const ChatContextProvider = ({
             };
           }
         );
+
+        mutation.mutate({
+          fileId,
+          isUserMessage: false,
+          createdAt,
+          message: accResponse,
+        });
       }
     },
     onError: (_, __, context) => {

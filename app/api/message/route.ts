@@ -21,13 +21,6 @@ export const POST = async (req: NextRequest) => {
   const body = await req.json();
   const { userId, fileId, message } = SendMessageValidator.parse(body);
 
-  /*const { getUser } = getKindeServerSession();
-  const user = getUser();
-
-  const { id: userId } = user;
-
-  if (!userId) return new Response("Unauthorized", { status: 401 });*/
-
   const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
     pineconeIndex,
     filter: { fileId },
