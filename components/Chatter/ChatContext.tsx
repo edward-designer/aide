@@ -39,6 +39,7 @@ export const ChatContextProvider = ({
   const backupMessage = useRef("");
 
   const mutation = trpc.addMessage.useMutation({
+    onMutate: async () => await utils.getFileMessages.cancel(),
     onSettled: async () => await utils.getFileMessages.invalidate(),
   });
 
