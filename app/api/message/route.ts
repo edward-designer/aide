@@ -1,3 +1,7 @@
+export const config = {
+  runtime: "edge",
+};
+
 import { db } from "@/db";
 import { openAi } from "@/lib/openAi";
 import { pinecone } from "@/lib/pinecone";
