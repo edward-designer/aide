@@ -11,7 +11,9 @@ const Page = () => {
   const searchParams = useSearchParams();
   const origin = searchParams.get("origin");
 
-  const { data, error } = trpc.authCallback.useQuery(undefined);
+  const { data, error } = trpc.authCallback.useQuery(undefined, {
+    retry: false,
+  });
 
   useEffect(() => {
     if (data?.success) {
@@ -21,7 +23,7 @@ const Page = () => {
 
   useEffect(() => {
     if (error?.data?.code === "UNAUTHORIZED") {
-      router.push("/sign-in");
+      router.push("/api/auth/login");
     }
   }, [error, origin, router]);
 
@@ -29,7 +31,7 @@ const Page = () => {
     <div className="w-full min-h-[50vh] mt-lg flex-centered flex-col">
       <Loader2 className="h-lg w-lg animate-spin text-primary/100" />
       <h3 className="mt-lg font-semibold text-3xl">
-        Setting up your account...
+        Setting Up Your Account...
       </h3>
       <p className="mt-md text-sm">You will be redirected automatically.</p>
     </div>

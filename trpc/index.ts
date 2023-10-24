@@ -41,6 +41,11 @@ export const appRouter = router({
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        _count: {
+          select: { Message: true },
+        },
+      },
     });
   }),
 

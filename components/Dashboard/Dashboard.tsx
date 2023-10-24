@@ -6,10 +6,10 @@ import { formatRelative } from "date-fns";
 import { MessageSquare, Plus, Bot } from "lucide-react";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
-import DeleteButton from "./Dashboard/DeleteButton";
-import UploadButton from "./UploadButton/UploadButton";
-import Message from "./others/Message";
-import { toast } from "./ui/use-toast";
+import DeleteButton from "./DeleteButton";
+import UploadButton from "../UploadButton/UploadButton";
+import Message from "../others/Message";
+import { toast } from "../ui/use-toast";
 
 interface TDashboard {
   user: User;
@@ -94,7 +94,7 @@ const Dashboard = ({ user }: TDashboard) => {
 
                 <div className="flex items-center gap-2">
                   <MessageSquare className="h-4 w-4" />
-                  mocked
+                  {file._count.Message}
                 </div>
                 <DeleteButton
                   callback={() => deleteFileHandler(file.id, file.key)}

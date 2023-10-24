@@ -1,9 +1,29 @@
 import { buttonVariants } from "./ui/button";
-import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  LoginLink,
+  RegisterLink,
+  getKindeServerSession,
+} from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const UserAction = () => {
-  return (
+  const { getUser } = getKindeServerSession();
+  const user = getUser();
+
+  return user ? (
+    <>
+      <Link
+        className={buttonVariants({
+          variant: "ghost",
+          size: "sm",
+        })}
+        href="/dashboard"
+      >
+        Dashboard
+      </Link>
+    </>
+  ) : (
     <>
       <LoginLink
         className={buttonVariants({
