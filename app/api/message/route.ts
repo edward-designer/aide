@@ -9,57 +9,58 @@ import { NextRequest } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
 export const POST = async (req: NextRequest) => {
-  const body = await req.json();
-  const { getUser } = getKindeServerSession();
-  const user = getUser();
-
-  const { id: userId } = user;
-
-  if (!userId) return new Response("Unauthorized", { status: 401 });
-
-  const { fileId, message } = SendMessageValidator.parse(body);
-
-  const file = await db.file.findFirst({
-    where: {
-      id: fileId,
-      userId,
-    },
-  });
-
-  if (!file) return new Response("Not found", { status: 404 });
-
-  await db.message.create({
-    data: {
-      text: message,
-      isUserMessage: true,
-      userId,
-      fileId,
-    },
-  });
-
   // AI
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_SECRET_KEY,
   });
   const pineconeIndex = pinecone.Index("aide");
 
-  const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-    pineconeIndex,
-    filter: { fileId },
-  });
+  // Request
+  const body = await req.json();
+  const { userId, fileId, message } = SendMessageValidator.parse(body);
 
-  const results = await vectorStore.similaritySearch(message, 4);
+  /*const { getUser } = getKindeServerSession();
+  const user = getUser();
 
-  const prevMessages = await db.message.findMany({
-    where: {
-      fileId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 6,
-  });
+  const { id: userId } = user;
 
+  if (!userId) return new Response("Unauthorized", { status: 401 });*/
+
+  const [file, _, results, prevMessages] = await Promise.all([
+    await db.file.findFirst({
+      where: {
+        id: fileId,
+        userId,
+      },
+    }),
+    await db.message.create({
+      data: {
+        text: message,
+        isUserMessage: true,
+        userId,
+        fileId,
+      },
+    }),
+    new Promise<Record<string, any>[]>(async (resolve) => {
+      const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
+        pineconeIndex,
+        filter: { fileId },
+      });
+      const results = await vectorStore.similaritySearch(message, 4);
+      resolve(results);
+    }),
+    await db.message.findMany({
+      where: {
+        fileId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 6,
+    }),
+  ]);
+
+  if (!file) return new Response("Not found", { status: 404 });
   const formattedPrevMessages = prevMessages.map((msg) => ({
     role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
     content: msg.text,

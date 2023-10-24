@@ -31,7 +31,7 @@ const Page = async ({ params }: TPage) => {
           </div>
         </div>
         <div className="shrink-0 flex-[0.75] border-t lg:w-96 lg:border-l lg:border-t-0">
-          <ChatWrapper fileId={fileId} />
+          <ChatWrapper fileId={fileId} userId={user.id} />
         </div>
       </section>
     </main>

@@ -20,11 +20,13 @@ export const ChatContext = createContext<StreamResponse>({
 
 interface TChatContextProvider {
   fileId: string;
+  userId: string;
   children: ReactNode;
 }
 
 export const ChatContextProvider = ({
   fileId,
+  userId,
   children,
 }: TChatContextProvider) => {
   const [message, setMessage] = useState("");
@@ -42,6 +44,7 @@ export const ChatContextProvider = ({
         method: "POST",
         body: JSON.stringify({
           fileId,
+          userId,
           message,
         }),
       });

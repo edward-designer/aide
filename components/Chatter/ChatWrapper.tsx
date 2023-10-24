@@ -11,9 +11,10 @@ import { ChatContextProvider } from "./ChatContext";
 
 interface TChatWrapper {
   fileId: string;
+  userId: string;
 }
 
-const ChatWrapper = ({ fileId }: TChatWrapper) => {
+const ChatWrapper = ({ fileId, userId }: TChatWrapper) => {
   const { data, error, isLoading } = trpc.getFileStatus.useQuery(
     {
       fileId,
@@ -81,7 +82,7 @@ const ChatWrapper = ({ fileId }: TChatWrapper) => {
     );
 
   return (
-    <ChatContextProvider fileId={fileId}>
+    <ChatContextProvider fileId={fileId} userId={userId}>
       <div className="relative min-h-full bg-primary-foreground flex justify-between gap-xs divide-y divide-text/20 flex-col">
         <div className="flex-1 relative justify-between flex flex-col mb-xl">
           <div className="absolute z-10 top-0 h-lg w-full bg-gradient-to-b from-white to-transparent" />

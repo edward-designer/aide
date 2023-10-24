@@ -46,8 +46,7 @@ const Messages = ({ fileId }: TMessages) => {
   useEffect(() => {
     const handleLoad = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting)
-          fetchNextPage().then((res) => console.log(res));
+        if (entry.isIntersecting) fetchNextPage();
       });
     };
     const intersectionObserver = new IntersectionObserver(handleLoad);
