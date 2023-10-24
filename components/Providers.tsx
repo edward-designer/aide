@@ -25,7 +25,11 @@ const Providers = ({ children }: PropsWithChildren) => {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: `${process.env.KINDE_SITE_URL}/api/trpc`,
+          url: `${
+            process.env.NODE_ENV === "production"
+              ? "https://aideuk.vercel.app"
+              : "http://localhost:3000"
+          }/api/trpc`,
         }),
       ],
     })
