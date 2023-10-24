@@ -168,14 +168,13 @@ export const ChatContextProvider = ({
             };
           }
         );
-
-        mutation.mutate({
-          fileId,
-          isUserMessage: false,
-          createdAt,
-          message: accResponse,
-        });
       }
+      mutation.mutate({
+        fileId,
+        isUserMessage: false,
+        createdAt,
+        message: accResponse,
+      });
     },
     onError: (_, __, context) => {
       setMessage(backupMessage.current);
