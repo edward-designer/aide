@@ -37,7 +37,7 @@ model File {
     name         String
     uploadStatus uploadStatus @default(PENDING)
     url          String
-    key          String
+    key          String       @unique
     createdAt    DateTime     @default(now())
     updatedAt    DateTime     @updatedAt
     User         User?        @relation(fields: [userId], references: [id])
