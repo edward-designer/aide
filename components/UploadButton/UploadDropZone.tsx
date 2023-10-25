@@ -24,6 +24,8 @@ export const UploadDropZone = () => {
   });
 
   const onDrop = async (acceptedFiles: File[]) => {
+    if (uploadFile?.name === acceptedFiles[0]?.name) return;
+
     if (acceptedFiles[0].type !== "application/pdf") {
       return toast({
         title: "AIDe loves PDF",
