@@ -50,10 +50,10 @@ export const appRouter = router({
   }),
 
   deleteFile: privateProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.string(), fileId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const { userId } = ctx;
-      const { id } = input;
+      const { id, fileId } = input;
 
       const file = await db.file.findFirst({
         where: {
@@ -67,6 +67,13 @@ export const appRouter = router({
       await db.file.delete({
         where: {
           id,
+          userId,
+        },
+      });
+
+      await db.message.deleteMany({
+        where: {
+          fileId,
           userId,
         },
       });

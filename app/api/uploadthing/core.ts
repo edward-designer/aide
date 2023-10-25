@@ -24,6 +24,7 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(({ metadata, file }) => {
+      //onUploadComplete must NOT use async function on Vercel
       const handleFile = async () => {
         const createdFile = await db.file.create({
           data: {

@@ -23,7 +23,7 @@ const Dashboard = ({ user }: TDashboard) => {
   });
 
   const deleteFileHandler = async (fileId: string, fileKey: string) => {
-    /* STEP1: delete from UploadThing */
+    /* STEP1: delete from UploadThing & pinecone DB */
     /* this requires the experimental Server Functions 
         await deleteServerFile(fileKey);*/
 
@@ -43,8 +43,9 @@ const Dashboard = ({ user }: TDashboard) => {
         variant: "destructive",
       });
     }
+
     /* STEIP2: delete from database */
-    deleteDBEntry({ id: fileId });
+    deleteDBEntry({ id: fileId, fileId });
   };
 
   return (
@@ -99,6 +100,7 @@ const Dashboard = ({ user }: TDashboard) => {
                 <DeleteButton
                   callback={() => deleteFileHandler(file.id, file.key)}
                 />
+                {file.id}
               </div>
             </li>
           ))}
