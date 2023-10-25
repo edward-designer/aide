@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { File, Loader2, Upload } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import ProgressBar from "../others/ProgressBar";
 import { useUploadThing } from "@/lib/uploadthing";
@@ -10,8 +10,11 @@ import { useRouter } from "next/navigation";
 
 export const UploadDropZone = () => {
   const router = useRouter();
-  const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [uploadCompleted, setUploadCompleted] = useState(false);
+  //const [uploadFile, setUploadFile] = useState<File | null>(null);
+  //const [uploadCompleted, setUploadCompleted] = useState(false);
+  const uploadFile = false;
+  const uploadCompleted = false;
+  const uploadedFile = useRef<string | null>(null);
 
   const { startUpload } = useUploadThing("docUploader");
   const { toast } = useToast();
@@ -24,9 +27,9 @@ export const UploadDropZone = () => {
   });
 
   const onDrop = async (acceptedFiles: File[]) => {
-    if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
+    //if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
     if (acceptedFiles[0].type !== "application/pdf") {
-      setUploadFile(null);
+      //setUploadFile(null);
       return toast({
         title: "AIDe loves PDF",
         description: "Sorry, currently only PDF files are allowed.",
@@ -34,18 +37,18 @@ export const UploadDropZone = () => {
       });
     }
     if (acceptedFiles[0].size > 4194304) {
-      setUploadFile(null);
+      //setUploadFile(null);
       return toast({
         title: "Oh, it's too large",
         description: "Only files up to 4MB are accepted.",
         variant: "destructive",
       });
     }
-
+    uploadedFile.current = acceptedFiles[0].name;
     const res = await startUpload([acceptedFiles[0]]);
 
     if (!res) {
-      setUploadFile(null);
+      //setUploadFile(null);
       return toast({
         title: "Something went wrong",
         description: "Please try again later.",
@@ -55,15 +58,15 @@ export const UploadDropZone = () => {
     const [fileResponse] = res;
     const key = fileResponse?.key;
     if (!key) {
-      setUploadFile(null);
+      //setUploadFile(null);
       return toast({
         title: "Something went wrong",
         description: "Please try again later.",
         variant: "destructive",
       });
     }
-    setUploadCompleted(true);
-    //startPolling({ key });
+    //setUploadCompleted(true);
+    startPolling({ key });
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -89,7 +92,7 @@ export const UploadDropZone = () => {
             {...getInputProps()}
             type="file"
             accept="application/pdf"
-            disabled={!!uploadFile}
+            //disabled={!!uploadFile}
           />
           <div className="flex-centered flex-col py-lg text-center">
             {uploadFile ? (
@@ -121,7 +124,7 @@ export const UploadDropZone = () => {
                   <File className="w-md h-md text-accent/100" />
                 </div>
                 <div className="p-sm h-full text-sm truncate">
-                  {uploadFile.name}
+                  {uploadedFile.current}
                 </div>
               </div>
 
