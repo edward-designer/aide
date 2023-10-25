@@ -1,10 +1,8 @@
 export const runtime = "edge";
 
-import { db } from "@/db";
 import { openAi } from "@/lib/openAi";
 import { pinecone } from "@/lib/pinecone";
 import { SendMessageValidator } from "@/lib/validators";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { NextRequest } from "next/server";

@@ -24,9 +24,7 @@ export const UploadDropZone = () => {
   });
 
   const onDrop = async (acceptedFiles: File[]) => {
-    if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
     if (acceptedFiles[0].type !== "application/pdf") {
-      setUploadFile(null);
       return toast({
         title: "AIDe loves PDF",
         description: "Sorry, currently only PDF files are allowed.",
@@ -34,14 +32,16 @@ export const UploadDropZone = () => {
       });
     }
     if (acceptedFiles[0].size > 4194304) {
-      setUploadFile(null);
       return toast({
         title: "Oh, it's too large",
         description: "Only files up to 4MB are accepted.",
         variant: "destructive",
       });
     }
-    const res = await startUpload(acceptedFiles);
+
+    if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
+    const res = await startUpload([acceptedFiles[0]]);
+    console.log(res);
     if (!res) {
       setUploadFile(null);
       return toast({
@@ -63,6 +63,7 @@ export const UploadDropZone = () => {
     setUploadCompleted(true);
     startPolling({ key });
   };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     noClick: true,

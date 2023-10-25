@@ -24,7 +24,7 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const createdFIle = await db.file.create({
+      const createdFile = await db.file.create({
         data: {
           key: file.key,
           name: file.name,
@@ -49,7 +49,7 @@ export const ourFileRouter = {
         for (const doc of pageLevelDocs) {
           doc.metadata = {
             ...doc.metadata,
-            fileId: createdFIle.id,
+            fileId: createdFile.id,
             userId: metadata.userId,
           };
         }
@@ -68,7 +68,7 @@ export const ourFileRouter = {
             uploadStatus: "SUCCESS",
           },
           where: {
-            id: createdFIle.id,
+            id: createdFile.id,
           },
         });
       } catch (err) {
@@ -77,7 +77,7 @@ export const ourFileRouter = {
             uploadStatus: "FAILED",
           },
           where: {
-            id: createdFIle.id,
+            id: createdFile.id,
           },
         });
       }
