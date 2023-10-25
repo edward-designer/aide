@@ -42,12 +42,12 @@ export default function RootLayout({
             userArea={
               <UserAccountNav
                 name={
-                  !user.given_name || !user.family_name
+                  !user?.given_name || !user?.family_name
                     ? "Your Account"
-                    : `${user.given_name} ${user.family_name}`
+                    : `${user?.given_name} ${user?.family_name}`
                 }
-                email={user.email ?? ""}
-                imageUrl={user.picture ?? ""}
+                email={user?.email ?? ""}
+                imageUrl={user?.picture ?? ""}
               />
             }
             loginLinks={<UserAction />}
