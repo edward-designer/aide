@@ -63,17 +63,16 @@ export const appRouter = router({
       });
 
       if (!file) throw new TRPCError({ code: "NOT_FOUND" });
-
-      await db.file.delete({
-        where: {
-          id,
-          userId,
-        },
-      });
-
+      
       await db.message.deleteMany({
         where: {
           fileId,
+          userId,
+        },
+      });
+      await db.file.delete({
+        where: {
+          id,
           userId,
         },
       });

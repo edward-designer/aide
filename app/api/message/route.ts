@@ -17,8 +17,8 @@ export const POST = async (req: NextRequest) => {
 
   // Request
   const body = await req.json();
-  const { userId, fileId, message } = SendMessageValidator.parse(body);
-
+  const { userId, fileId, message, formattedPrevMessages } =
+    SendMessageValidator.parse(body);
   const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
     pineconeIndex,
     filter: { fileId, userId },
@@ -39,6 +39,14 @@ export const POST = async (req: NextRequest) => {
         role: "user",
         content: `Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
         
+  \n----------------\n
+
+  PREVIOUS CONVERSATION:
+  ${formattedPrevMessages?.map((message) => {
+    if (message.role === "user") return `User: ${message.content}\n`;
+    return `Assistant: ${message.content}\n`;
+  })}
+  
   \n----------------\n
   
   CONTEXT:

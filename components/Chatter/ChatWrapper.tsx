@@ -87,7 +87,6 @@ const ChatWrapper = ({ fileId, userId }: TChatWrapper) => {
         <div className="flex-1 relative justify-between flex flex-col mb-xl">
           <div className="absolute z-10 top-0 h-lg w-full bg-gradient-to-b from-white to-transparent" />
           <Messages fileId={fileId} />
-          <div className="absolute z-10 bottom-14 h-lg w-full bg-gradient-to-t from-white to-transparent" />
         </div>
         <ChatInput isDisabled={false} />
       </div>

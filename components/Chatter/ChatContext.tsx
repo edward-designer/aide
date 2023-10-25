@@ -51,12 +51,24 @@ export const ChatContextProvider = ({
         createdAt: new Date().toISOString(),
         message,
       });
+      const previousMessages = utils.getFileMessages.getInfiniteData({
+        fileId,
+        limit: INFINITE_QUERY_LIMIT,
+      });
+      const formattedPrevMessages = previousMessages?.pages[0].messages.map(
+        (msg) => ({
+          role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
+          content: msg.text,
+        })
+      );
+
       const response = await fetch("/api/message", {
         method: "POST",
         body: JSON.stringify({
           fileId,
           userId,
           message,
+          formattedPrevMessages,
         }),
       });
 
@@ -71,7 +83,10 @@ export const ChatContextProvider = ({
       setMessage("");
 
       await utils.getFileMessages.cancel();
-      const previousMessages = utils.getFileMessages.getInfiniteData();
+      const previousMessages = utils.getFileMessages.getInfiniteData({
+        fileId,
+        limit: INFINITE_QUERY_LIMIT,
+      });
 
       utils.getFileMessages.setInfiniteData(
         { fileId, limit: INFINITE_QUERY_LIMIT },

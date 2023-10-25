@@ -12,9 +12,12 @@ interface TChatMessage {
 const ChatMessage = ({ message, isNextMessageSamePerson }: TChatMessage) => {
   return (
     <div
-      className={cn("grid grid-cols-[3em_1fr_3em] items-end gap-sm ", {
-        "justify-end": message.isUserMessage,
-      })}
+      className={cn(
+        "grid grid-cols-[3em_1fr_3em] items-end gap-sm last:pt-lg",
+        {
+          "justify-end": message.isUserMessage,
+        }
+      )}
     >
       <div
         className={cn("relative flex-centered aspect-square rounded-full", {

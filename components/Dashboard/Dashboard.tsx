@@ -100,7 +100,6 @@ const Dashboard = ({ user }: TDashboard) => {
                 <DeleteButton
                   callback={() => deleteFileHandler(file.id, file.key)}
                 />
-                {file.id}
               </div>
             </li>
           ))}

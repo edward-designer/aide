@@ -25,6 +25,7 @@ const Messages = ({ fileId }: TMessages) => {
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
         keepPreviousData: true,
+        staleTime: 60 * 1000 * 10,
       }
     );
   const messages = data?.pages.flatMap((page) => page.messages);
@@ -57,7 +58,7 @@ const Messages = ({ fileId }: TMessages) => {
   }, [fetchNextPage, data]);
 
   return (
-    <div className="relative flex max-h-[calc(100vh-4.5rem-7rem)] border-input/20 flex-1 flex-col-reverse gap-md p-sm py-lg overflow-y-auto scrollbar-thumb-primary scrollbar-thumb-rounded scrollbar-track-primary-foreground scrollbar-w-xs scrolling-touch">
+    <div className="pb-xl relative flex max-h-[calc(100vh-8rem)] border-input/20 flex-1 flex-col-reverse gap-md p-sm py-lg overflow-y-auto scrollbar-thumb-primary scrollbar-thumb-rounded scrollbar-track-primary-foreground scrollbar-w-xs scrolling-touch">
       {combinedMessages && combinedMessages.length > 0 ? (
         <>
           {combinedMessages.map((message, i) => {

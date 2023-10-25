@@ -16,6 +16,7 @@ const ChatInput = ({ isDisabled }: TChatInput) => {
 
   return (
     <div className="absolute bottom-0 left-0 w-full bg-primary-foreground">
+      <div className="absolute z-10 -top-lg h-lg w-full bg-gradient-to-t from-white to-transparent  border-b" />
       <form className="mx-sm flex flex-row gap-3 md:mx-md md:last:mb-lg lg:mx-auto lg:max-w-2xl xl:max-w-3xl">
         <div className="relative flex h-full flex-1 items-stretch md:flex-col">
           <div className="relative flex flex-cl w-full flex-grow p-4">
