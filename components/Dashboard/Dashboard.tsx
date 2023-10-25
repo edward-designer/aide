@@ -104,7 +104,11 @@ const Dashboard = ({ user }: TDashboard) => {
           ))}
         </ul>
       ) : isLoading ? (
-        <Skeleton height={100} className="my-2" count={3} />
+        <div className="flex [&>*]:flex-1 gap-md mt-lg">
+          <Skeleton height={120} className="mb-md" count={2} />
+          <Skeleton height={120} className="mb-md" count={2} />
+          <Skeleton height={120} className="mb-md" count={2} />
+        </div>
       ) : (
         <Message
           icon={<Bot className="h-xl w-xl text-accent/90" />}
