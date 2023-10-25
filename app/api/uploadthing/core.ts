@@ -14,7 +14,7 @@ import { pinecone } from "@/lib/pinecone";
 const f = createUploadthing();
 
 export const ourFileRouter = {
-  docUploader: f({ pdf: { maxFileSize: "4MB" } })
+  docUploader: f({ pdf: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(async ({ req }) => {
       const { getUser } = getKindeServerSession();
       const user = getUser();
@@ -23,64 +23,67 @@ export const ourFileRouter = {
 
       return { userId: user.id };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
-      const createdFile = await db.file.create({
-        data: {
-          key: file.key,
-          name: file.name,
-          userId: metadata.userId,
-          url: `https://utfs.io/f/${file.key}`,
-          uploadStatus: "PROCESSING",
-        },
-      });
-
-      try {
-        const response = await fetch(`https://utfs.io/f/${file.key}`);
-        const blob = await response.blob();
-
-        const loader = new PDFLoader(blob);
-        const pageLevelDocs = await loader.load();
-
-        const pagesAmt = pageLevelDocs.length;
-
-        const pineconeIndex = pinecone.Index("aide");
-
-        // add metadata
-        for (const doc of pageLevelDocs) {
-          doc.metadata = {
-            ...doc.metadata,
-            fileId: createdFile.id,
+    .onUploadComplete(({ metadata, file }) => {
+      const handleFile = async () => {
+        const createdFile = await db.file.create({
+          data: {
+            key: file.key,
+            name: file.name,
             userId: metadata.userId,
-          };
+            url: `https://utfs.io/f/${file.key}`,
+            uploadStatus: "PROCESSING",
+          },
+        });
+
+        try {
+          const response = await fetch(`https://utfs.io/f/${file.key}`);
+          const blob = await response.blob();
+
+          const loader = new PDFLoader(blob);
+          const pageLevelDocs = await loader.load();
+
+          const pagesAmt = pageLevelDocs.length;
+
+          const pineconeIndex = pinecone.Index("aide");
+
+          // add metadata
+          for (const doc of pageLevelDocs) {
+            doc.metadata = {
+              ...doc.metadata,
+              fileId: createdFile.id,
+              userId: metadata.userId,
+            };
+          }
+
+          const embeddings = new OpenAIEmbeddings({
+            openAIApiKey: process.env.OPENAI_SECRET_KEY,
+          });
+
+          await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
+            pineconeIndex,
+            //namespace: createdFile.id
+          });
+
+          await db.file.update({
+            data: {
+              uploadStatus: "SUCCESS",
+            },
+            where: {
+              id: createdFile.id,
+            },
+          });
+        } catch (err) {
+          await db.file.update({
+            data: {
+              uploadStatus: "FAILED",
+            },
+            where: {
+              id: createdFile.id,
+            },
+          });
         }
-
-        const embeddings = new OpenAIEmbeddings({
-          openAIApiKey: process.env.OPENAI_SECRET_KEY,
-        });
-
-        await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
-          pineconeIndex,
-          //namespace: createdFile.id
-        });
-
-        await db.file.update({
-          data: {
-            uploadStatus: "SUCCESS",
-          },
-          where: {
-            id: createdFile.id,
-          },
-        });
-      } catch (err) {
-        await db.file.update({
-          data: {
-            uploadStatus: "FAILED",
-          },
-          where: {
-            id: createdFile.id,
-          },
-        });
-      }
+      };
+      handleFile();
     }),
 } satisfies FileRouter;
 
