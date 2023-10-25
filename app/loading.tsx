@@ -1,5 +1,4 @@
 import { Loader2 } from "lucide-react";
-import Skeleton from "react-loading-skeleton";
 
 export default function Loading() {
   return (
