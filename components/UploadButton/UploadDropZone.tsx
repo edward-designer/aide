@@ -63,7 +63,7 @@ export const UploadDropZone = () => {
       });
     }
     setUploadCompleted(true);
-    startPolling({ key });
+    //startPolling({ key });
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

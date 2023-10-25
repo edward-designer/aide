@@ -10,8 +10,6 @@ import UserAction from "@/components/UserMenu";
 
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Suspense } from "react";
-import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
