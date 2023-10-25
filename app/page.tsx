@@ -43,7 +43,7 @@ export default function Home() {
           documents via a chat interface. Easily upload your file and start
           getting answers right away!
         </p>
-        <div className="group">
+        <div className="group mix-blend-multiply">
           <Link
             className={buttonVariants({
               size: "lg",
@@ -53,7 +53,7 @@ export default function Home() {
             href="/dashboard"
             target="_blank"
           >
-            <div className="skew-x-12 absolute inset-0 w-0 bg-gradient-to-r to-primary/100 from-accent/100 duration-300 hover:duration-500 transition-all ease-out group-hover:w-full"></div>
+            <div className="fixed !rounded-full inset-0 w-0 opacity-0 bg-gradient-to-r to-primary/100 from-accent/100 duration-300 hover:duration-500 transition-all ease-out group-hover:opacity-100 group-hover:w-full"></div>
             <span className="z-10 flex-centered flex-row">
               Start for FREE <ArrowRight className="ml-4 h-lg w-lg" />
             </span>
@@ -62,7 +62,7 @@ export default function Home() {
             src={robotPic}
             alt="robot"
             aria-hidden="true"
-            className="-z-10 shadow-lg pointer-events-none absolute right-0 h-[100vh] w-auto object-cover mix-blend-multiply opacity-50 bottom-0 brightness-150 blur-md group-hover:blur-none transition-all"
+            className=" m will-change-auto -z-10 pointer-events-none absolute right-0 h-[100vh] w-auto object-cover mix-blend-multiply opacity-50 bottom-0 blur-md group-hover:blur-none transition-all"
           />
         </div>
         <Image
@@ -134,11 +134,11 @@ export default function Home() {
       </MaxWidthWrapper>
 
       <div
-        className="isolate absolute inset-0 pointer-events-none transform-gpu -z-10 blur-3xl overflow-hidden backdrop-brightness-150 opacity-60"
+        className="isolate absolute inset-0 pointer-events-none transform-gpu -z-10 blur-3xl overflow-hidden opacity-60"
         aria-hidden={true}
       >
-        <div className="mix-blend-multiply animate-background-morph relative h-[75%] left-[calc(50%-11rem)] sm:left-[calc(50%-30rem)] sm:w-[78.125rem] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-purple-400/40 via-white/50 to-blue-600/40"></div>
-        <div className="animate-background-morph relative h-[50%] sm:w-[78.125rem] aspect-[1155/678] w-[36.125rem] translate-x-1/2 -rotate-[30deg] bg-gradient-to-tr from-yellow-200/75 to-white/70"></div>
+        <div className="blur-3xl animate-background-morph relative h-[75%] left-[calc(50%-11rem)] sm:left-[calc(50%-30rem)] sm:w-[78.125rem] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-purple-400/40 via-white/50 to-blue-600/40"></div>
+        <div className="blur-3xl animate-background-morph relative h-[50%] sm:w-[78.125rem] aspect-[1155/678] w-[36.125rem] translate-x-1/2 -rotate-[30deg] bg-gradient-to-tr from-yellow-200/75 to-white/70"></div>
       </div>
     </>
   );
