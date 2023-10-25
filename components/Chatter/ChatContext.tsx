@@ -2,7 +2,7 @@ import { ChangeEvent, ReactNode, createContext, useRef, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { trpc } from "@/app/_trpc/client";
-import { INFINITE_QUERY_LIMIT } from "@/app/config/infinite-query";
+import { INFINITE_QUERY_LIMIT } from "@/config/infinite-query";
 
 interface StreamResponse {
   addMessage: () => void;

@@ -10,6 +10,8 @@ import UserAction from "@/components/UserMenu";
 
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import UserAccountNav from "@/components/UserAccountNav/UserAccountNav";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +26,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { getUser } = getKindeServerSession();
+  const user = getUser();
+
   return (
     <html lang="en" className="light">
       <Providers>
@@ -33,9 +38,21 @@ export default function RootLayout({
             inter.className
           )}
         >
-          <Navbar>
-            <UserAction />
-          </Navbar>
+          <Navbar
+            userArea={
+              <UserAccountNav
+                name={
+                  !user.given_name || !user.family_name
+                    ? "Your Account"
+                    : `${user.given_name} ${user.family_name}`
+                }
+                email={user.email ?? ""}
+                imageUrl={user.picture ?? ""}
+              />
+            }
+            loginLinks={<UserAction />}
+            isLoggedIn={!!user}
+          />
           <ReactQueryDevtools />
           <Toaster />
           {children}

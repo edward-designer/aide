@@ -11,13 +11,14 @@ import { Button, buttonVariants } from "./ui/button";
 import { ReactNode, useState } from "react";
 
 interface TNavbar {
-  children: ReactNode;
+  loginLinks: ReactNode;
+  userArea: ReactNode;
+  isLoggedIn: boolean;
 }
 
-const Navbar = ({ children }: TNavbar) => {
+const Navbar = ({ loginLinks, userArea, isLoggedIn }: TNavbar) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const user = "";
   return (
     <header
       className={cn([
@@ -46,16 +47,7 @@ const Navbar = ({ children }: TNavbar) => {
             </Button>
             {isExpanded && (
               <div className="items-center space-x-4 flex flex-wrap justify-end">
-                <Link
-                  href="/"
-                  className={buttonVariants({
-                    variant: "ghost",
-                    size: "sm",
-                  })}
-                >
-                  Home
-                </Link>
-                {!user ? (
+                {!isLoggedIn ? (
                   <>
                     <Link
                       href="/pricing"
@@ -66,7 +58,7 @@ const Navbar = ({ children }: TNavbar) => {
                     >
                       Pricing
                     </Link>
-                    {children}
+                    {loginLinks}
                   </>
                 ) : (
                   <>
@@ -79,6 +71,7 @@ const Navbar = ({ children }: TNavbar) => {
                     >
                       Dashboard
                     </Link>
+                    {userArea}
                   </>
                 )}
               </div>
