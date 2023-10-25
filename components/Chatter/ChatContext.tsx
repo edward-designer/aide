@@ -143,6 +143,7 @@ export const ChatContextProvider = ({
       let isFirstResponse = true;
       const id = crypto.randomUUID();
       const createdAt = new Date().toISOString();
+      utils.getFileMessages.cancel();
 
       while (!done) {
         const { value, done: doneStream } = await reader.read();
