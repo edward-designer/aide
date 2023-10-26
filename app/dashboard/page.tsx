@@ -4,8 +4,9 @@ import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 const Page = async () => {
   const user = await useLoggedIn();
+  const { isSubscribed } = await getUserSubscriptionPlan();
 
-  return <Dashboard user={user} />;
+  return <Dashboard user={user} isSubscribed={isSubscribed} />;
 };
 
 export default Page;

@@ -32,17 +32,11 @@ export const UploadDropZone = async ({
     },
     retry: 10,
     retryDelay: 1000,
-    onError: (error) =>
-      toast({
-        title: "Error Uploading File",
-        description: "Sorry, please try again.",
-        variant: "destructive",
-      }),
   });
 
   const onDrop = async (acceptedFiles: File[]) => {
     if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
-    if (
+    /*if (
       acceptedFiles[0].type !== "application/pdf" &&
       acceptedFiles[0].type !==
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
@@ -57,7 +51,7 @@ export const UploadDropZone = async ({
           "Sorry, currently only certain types of files are allowed.",
         variant: "destructive",
       });
-    }
+    }*/
     if (acceptedFiles[0].size > 4194304) {
       setUploadFile(null);
       return toast({
