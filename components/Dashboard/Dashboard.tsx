@@ -10,7 +10,6 @@ import DeleteButton from "./DeleteButton";
 import UploadButton from "../UploadButton/UploadButton";
 import Message from "../others/Message";
 import { toast } from "../ui/use-toast";
-import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 interface TDashboard {
   user: User;
