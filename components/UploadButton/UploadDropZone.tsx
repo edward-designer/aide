@@ -13,11 +13,13 @@ interface TUploadDropZone {
   isSubscribed?: boolean;
 }
 
-export const UploadDropZone = async () => {
+export const UploadDropZone = async ({
+  isSubscribed = false,
+}: TUploadDropZone) => {
   const router = useRouter();
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadCompleted, setUploadCompleted] = useState(false);
-  const isSubscribed = false;
+
   const sizeLimit =
     PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))!.size ??
     4;
@@ -107,7 +109,7 @@ export const UploadDropZone = async () => {
           <input
             {...getInputProps()}
             type="file"
-            accept="application/pdf,text/plain,application/rtf,.txt,.rtf,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            accept="application/pdf, text/plain, application/rtf"
             disabled={!!uploadFile}
           />
           <div className="flex-centered flex-col py-lg text-center">
