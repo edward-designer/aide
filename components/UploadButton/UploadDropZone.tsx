@@ -8,7 +8,6 @@ import { useToast } from "../ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
 import { PLANS } from "@/config/stripe";
-import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 interface TUploadDropZone {
   isSubscribed?: boolean;
@@ -21,9 +20,9 @@ export const UploadDropZone = async ({
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadCompleted, setUploadCompleted] = useState(false);
 
-  const sizeLimit = PLANS.find(
-    (plan) => plan.slug === (isSubscribed ? "pro" : "free")
-  )!.size;
+  const sizeLimit =
+    PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))!.size ??
+    4;
 
   const { startUpload } = useUploadThing("docUploader");
   const { toast } = useToast();
@@ -131,7 +130,7 @@ export const UploadDropZone = async ({
                   <strong>Drag & Drop</strong> OR <strong>Click</strong> to
                   Upload
                   <br />
-                  (size limit: up to ${sizeLimit} MB)
+                  (size limit: up to {sizeLimit} MB)
                 </>
               ) : (
                 <>

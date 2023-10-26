@@ -40,6 +40,7 @@ export const appRouter = router({
     return await db.file.findMany({
       where: {
         userId,
+        uploadStatus: "SUCCESS",
       },
       orderBy: {
         createdAt: "desc",

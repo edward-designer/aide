@@ -57,6 +57,7 @@ export const ourFileRouter = {
           const blob = await response.blob();
 
           let loader;
+          console.log(metadata.fileType);
           switch (metadata.fileType) {
             case "application/pdf": {
               loader = new PDFLoader(blob);
@@ -107,6 +108,7 @@ export const ourFileRouter = {
             },
           });
         } catch (err) {
+          console.log(err);
           await db.file.update({
             data: {
               uploadStatus: "FAILED",

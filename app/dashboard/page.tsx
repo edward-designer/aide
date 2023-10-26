@@ -6,7 +6,7 @@ const Page = async () => {
   const user = await useLoggedIn();
   const { isSubscribed } = await getUserSubscriptionPlan();
 
-  return <Dashboard user={user} isSubscribed={isSubscribed} />;
+  return <Dashboard user={user} />;
 };
 
 export default Page;
