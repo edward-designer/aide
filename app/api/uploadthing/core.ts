@@ -74,27 +74,11 @@ export const ourFileRouter = {
           const response = await fetch(`https://utfs.io/f/${file.key}`);
           const blob = await response.blob();
 
-          let loader: PDFLoader | TextLoader | DocxLoader = new PDFLoader(blob);
-          switch (metadata.fileType) {
-            case "application/pdf": {
-              break;
-            }
-            case "text/plain":
-            case "application/rtf": {
-              loader = new TextLoader(blob);
-              break;
-            }
-            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            case "application/msword": {
-              loader = new DocxLoader(blob);
-              break;
-            }
-            default:
-              throw new Error("Unknown file type:" + metadata.fileType);
-          }
-
+          const loader = new PDFLoader(blob);
           const pageLevelDocs = await loader.load();
+
           const pagesAmt = pageLevelDocs.length;
+
           const pineconeIndex = pinecone.Index("aide");
 
           // add metadata
@@ -112,6 +96,7 @@ export const ourFileRouter = {
 
           await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
             pineconeIndex,
+            //namespace: createdFile.id
           });
 
           await db.file.update({
@@ -123,7 +108,6 @@ export const ourFileRouter = {
             },
           });
         } catch (err) {
-          console.log(err);
           await db.file.update({
             data: {
               uploadStatus: "FAILED",
