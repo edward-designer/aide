@@ -13,13 +13,11 @@ interface TUploadDropZone {
   isSubscribed?: boolean;
 }
 
-export const UploadDropZone = async ({
-  isSubscribed = false,
-}: TUploadDropZone) => {
+export const UploadDropZone = async () => {
   const router = useRouter();
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadCompleted, setUploadCompleted] = useState(false);
-
+  const isSubscribed = false;
   const sizeLimit =
     PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))!.size ??
     4;
@@ -28,7 +26,7 @@ export const UploadDropZone = async ({
   const { toast } = useToast();
   const { mutate: startPolling } = trpc.getFile.useMutation({
     onSuccess: (file) => {
-      router.push(`/dashboard/${file.id}`);
+      if (file) router.push(`/dashboard/${file.id}`);
     },
     retry: 10,
     retryDelay: 1000,

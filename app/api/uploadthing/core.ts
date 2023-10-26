@@ -56,7 +56,6 @@ export const ourFileRouter = {
           const blob = await response.blob();
 
           let loader;
-          console.log(metadata.fileType);
           switch (metadata.fileType) {
             case "application/pdf": {
               loader = new PDFLoader(blob);
@@ -95,7 +94,6 @@ export const ourFileRouter = {
 
           await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
             pineconeIndex,
-            //namespace: createdFile.id
           });
 
           await db.file.update({
