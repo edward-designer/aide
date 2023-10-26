@@ -10,12 +10,14 @@ import DeleteButton from "./DeleteButton";
 import UploadButton from "../UploadButton/UploadButton";
 import Message from "../others/Message";
 import { toast } from "../ui/use-toast";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 interface TDashboard {
   user: User;
+  isSubscribed: boolean;
 }
 
-const Dashboard = ({ user }: TDashboard) => {
+const Dashboard = ({ user, isSubscribed }: TDashboard) => {
   const utils = trpc.useUtils();
   const { data: files, isLoading } = trpc.getUserFiles.useQuery();
   const { mutate: deleteDBEntry } = trpc.deleteFile.useMutation({
@@ -58,7 +60,7 @@ const Dashboard = ({ user }: TDashboard) => {
           </span>
           s
         </h1>
-        <UploadButton />
+        <UploadButton isSubscribed={isSubscribed} />
       </div>
       {/* display user files */}
       {files && files.length !== 0 ? (

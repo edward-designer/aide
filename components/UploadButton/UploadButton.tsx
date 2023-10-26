@@ -8,7 +8,11 @@ import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 import { UploadDropZone } from "./UploadDropZone";
 
-const UploadButton = () => {
+interface TUploadButton {
+  isSubscribed?: boolean;
+}
+
+const UploadButton = ({ isSubscribed = false }: TUploadButton) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,7 +33,7 @@ const UploadButton = () => {
             e.preventDefault();
           }}
         >
-          <UploadDropZone />
+          <UploadDropZone isSubscribed={isSubscribed} />
         </DialogContent>
       </Dialog>
     </>

@@ -8,20 +8,22 @@ import { useToast } from "../ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
 import { PLANS } from "@/config/stripe";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { getUserSubscriptionPlan } from "@/lib/stripe";
 
-export const UploadDropZone = async () => {
+interface TUploadDropZone {
+  isSubscribed?: boolean;
+}
+
+export const UploadDropZone = async ({
+  isSubscribed = false,
+}: TUploadDropZone) => {
   const router = useRouter();
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadCompleted, setUploadCompleted] = useState(false);
 
-  const { getUser } = getKindeServerSession();
-  const user = getUser();
-  const { isSubscribed } = await getUserSubscriptionPlan();
-  const sizeLimit = PLANS.filter(
+  const sizeLimit = PLANS.find(
     (plan) => plan.slug === (isSubscribed ? "pro" : "free")
-  )[0].size;
+  )!.size;
 
   const { startUpload } = useUploadThing("docUploader");
   const { toast } = useToast();
