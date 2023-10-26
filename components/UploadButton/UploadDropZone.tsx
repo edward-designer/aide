@@ -34,9 +34,9 @@ export const UploadDropZone = async ({
     retryDelay: 1000,
   });
 
-  const onDrop = async (acceptedFiles: File[]) => {
+  /*const onDrop = async (acceptedFiles: File[]) => {
     if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
-    /*if (
+    if (
       acceptedFiles[0].type !== "application/pdf" &&
       acceptedFiles[0].type !==
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
@@ -51,7 +51,7 @@ export const UploadDropZone = async ({
           "Sorry, currently only certain types of files are allowed.",
         variant: "destructive",
       });
-    }*/
+    }
     if (acceptedFiles[0].size > 4194304) {
       setUploadFile(null);
       return toast({
@@ -85,7 +85,9 @@ export const UploadDropZone = async ({
     }
     setUploadCompleted(true);
     startPolling({ key });
-  };
+  };*/
+
+  const onDrop = () => console.log("drop");
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
