@@ -7,22 +7,12 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
-import { PLANS } from "@/config/stripe";
+import { title } from "process";
 
-interface TUploadDropZone {
-  isSubscribed?: boolean;
-}
-
-export const UploadDropZone = async ({
-  isSubscribed = false,
-}: TUploadDropZone) => {
+export const UploadDropZone = () => {
   const router = useRouter();
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadCompleted, setUploadCompleted] = useState(false);
-
-  const sizeLimit =
-    PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))!.size ??
-    4;
 
   const { startUpload } = useUploadThing("docUploader");
   const { toast } = useToast();
@@ -31,24 +21,16 @@ export const UploadDropZone = async ({
       if (file) router.push(`/dashboard/${file.id}`);
     },
     retry: 10,
-    retryDelay: 1000,
+    retryDelay: 500,
   });
 
-  /*const onDrop = async (acceptedFiles: File[]) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
-    if (
-      acceptedFiles[0].type !== "application/pdf" &&
-      acceptedFiles[0].type !==
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
-      acceptedFiles[0].type !== "application/msword" &&
-      acceptedFiles[0].type !== "text/plain" &&
-      acceptedFiles[0].type !== "application/rtf"
-    ) {
+    if (acceptedFiles[0].type !== "application/pdf") {
       setUploadFile(null);
       return toast({
-        title: "AIDe loves PDF/Word/Text files",
-        description:
-          "Sorry, currently only certain types of files are allowed.",
+        title: "AIDe loves PDF",
+        description: "Sorry, currently only PDF files are allowed.",
         variant: "destructive",
       });
     }
@@ -56,7 +38,7 @@ export const UploadDropZone = async ({
       setUploadFile(null);
       return toast({
         title: "Oh, it's too large",
-        description: `Only files up to ${sizeLimit} MB are accepted.`,
+        description: "Only files up to 4MB are accepted.",
         variant: "destructive",
       });
     }
@@ -85,9 +67,7 @@ export const UploadDropZone = async ({
     }
     setUploadCompleted(true);
     startPolling({ key });
-  };*/
-
-  const onDrop = () => console.log("drop");
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -111,7 +91,7 @@ export const UploadDropZone = async ({
           <input
             {...getInputProps()}
             type="file"
-            accept="application/pdf, text/plain, application/rtf"
+            accept="application/pdf"
             disabled={!!uploadFile}
           />
           <div className="flex-centered flex-col py-lg text-center">
@@ -126,7 +106,7 @@ export const UploadDropZone = async ({
                   <strong>Drag & Drop</strong> OR <strong>Click</strong> to
                   Upload
                   <br />
-                  (size limit: up to {sizeLimit} MB)
+                  (size limit: up to 4MB)
                 </>
               ) : (
                 <>
