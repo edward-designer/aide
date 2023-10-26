@@ -10,6 +10,7 @@ import { RecursiveUrlLoader } from "langchain/document_loaders/web/recursive_url
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { pinecone } from "@/lib/pinecone";
 import { z } from "zod";
+import mammoth from "mammoth";
 
 const f = createUploadthing();
 
@@ -71,22 +72,29 @@ export const ourFileRouter = {
         });
 
         try {
-          const response = await fetch(`https://utfs.io/f/${file.key}`);
-          const blob = await response.blob();
-
-          let loader: PDFLoader | TextLoader | DocxLoader = new PDFLoader(blob);
+          let loader: PDFLoader | TextLoader | DocxLoader;
           switch (metadata.fileType) {
             case "application/pdf": {
+              const response = await fetch(`https://utfs.io/f/${file.key}`);
+              const blob = await response.blob();
+              loader = new PDFLoader(blob);
               break;
             }
             case "text/plain":
             case "application/rtf": {
+              const response = await fetch(`https://utfs.io/f/${file.key}`);
+              const blob = await response.blob();
               loader = new TextLoader(blob);
               break;
             }
             case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             case "application/msword": {
-              loader = new DocxLoader(blob);
+              const result = await mammoth.extractRawText({
+                path: `https://utfs.io/f/${file.key}`,
+              });
+              const str = result.value;
+              const blob = new Blob([str], { type: "plain/text" });
+              loader = new TextLoader(blob);
               break;
             }
             default:
