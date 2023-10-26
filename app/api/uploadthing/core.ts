@@ -74,10 +74,9 @@ export const ourFileRouter = {
           const response = await fetch(`https://utfs.io/f/${file.key}`);
           const blob = await response.blob();
 
-          let loader;
+          let loader: PDFLoader | TextLoader | DocxLoader = new PDFLoader(blob);
           switch (metadata.fileType) {
             case "application/pdf": {
-              loader = new PDFLoader(blob);
               break;
             }
             case "text/plain":
