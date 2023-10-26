@@ -7,12 +7,20 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
-import { title } from "process";
+import { PLANS } from "@/config/stripe";
 
-export const UploadDropZone = () => {
+interface TUploadDropZone {
+  isSubscribed?: boolean;
+}
+
+export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
   const router = useRouter();
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadCompleted, setUploadCompleted] = useState(false);
+
+  const sizeLimit =
+    PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))!.size ??
+    4;
 
   const { startUpload } = useUploadThing("docUploader");
   const { toast } = useToast();
@@ -21,12 +29,19 @@ export const UploadDropZone = () => {
       if (file) router.push(`/dashboard/${file.id}`);
     },
     retry: 10,
-    retryDelay: 500,
+    retryDelay: 1000,
   });
 
   const onDrop = async (acceptedFiles: File[]) => {
     if (acceptedFiles && acceptedFiles[0]) setUploadFile(acceptedFiles[0]);
-    if (acceptedFiles[0].type !== "application/pdf") {
+    if (
+      acceptedFiles[0].type !== "application/pdf" &&
+      acceptedFiles[0].type !==
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+      acceptedFiles[0].type !== "application/msword" &&
+      acceptedFiles[0].type !== "text/plain" &&
+      acceptedFiles[0].type !== "application/rtf"
+    ) {
       setUploadFile(null);
       return toast({
         title: "AIDe loves PDF",
@@ -38,7 +53,7 @@ export const UploadDropZone = () => {
       setUploadFile(null);
       return toast({
         title: "Oh, it's too large",
-        description: "Only files up to 4MB are accepted.",
+        description: `Only files up to ${sizeLimit} MB are accepted.`,
         variant: "destructive",
       });
     }
@@ -106,7 +121,7 @@ export const UploadDropZone = () => {
                   <strong>Drag & Drop</strong> OR <strong>Click</strong> to
                   Upload
                   <br />
-                  (size limit: up to 4MB)
+                  (size limit: up to {sizeLimit} MB)
                 </>
               ) : (
                 <>
