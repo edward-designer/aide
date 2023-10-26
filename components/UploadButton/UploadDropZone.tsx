@@ -31,7 +31,7 @@ export const UploadDropZone = async ({
       router.push(`/dashboard/${file.id}`);
     },
     retry: 10,
-    retryDelay: 500,
+    retryDelay: 1000,
     onError: (error) =>
       toast({
         title: "Error Uploading File",

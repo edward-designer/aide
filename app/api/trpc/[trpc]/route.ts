@@ -7,6 +7,10 @@ const handler = (req: Request) =>
     req,
     router: appRouter,
     createContext: () => ({}),
+    onError: (opts) => {
+      const { error } = opts;
+      console.error("Error:", error);
+    },
   });
 
 export { handler as GET, handler as POST };
