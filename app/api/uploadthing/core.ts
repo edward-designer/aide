@@ -10,18 +10,34 @@ import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { RecursiveUrlLoader } from "langchain/document_loaders/web/recursive_url";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { pinecone } from "@/lib/pinecone";
+import { z } from "zod";
 
 const f = createUploadthing();
 
 export const ourFileRouter = {
-  docUploader: f({ pdf: { maxFileSize: "4MB", maxFileCount: 1 } })
-    .middleware(async ({ req }) => {
+  docUploader: f({
+    pdf: { maxFileSize: "4MB", maxFileCount: 1 },
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+      maxFileSize: "4MB",
+      maxFileCount: 1,
+    },
+    "application/msword": {
+      maxFileSize: "4MB",
+      maxFileCount: 1,
+    },
+    text: {
+      maxFileSize: "4MB",
+      maxFileCount: 1,
+    },
+  })
+    .input(z.object({ fileType: z.string() }))
+    .middleware(async ({ input }) => {
       const { getUser } = getKindeServerSession();
       const user = getUser();
 
       if (!user || !user.id) throw new Error("Unauthenticated");
 
-      return { userId: user.id };
+      return { userId: user.id, fileType: input.fileType };
     })
     .onUploadComplete(({ metadata, file }) => {
       //onUploadComplete must NOT use async function on Vercel
@@ -40,11 +56,28 @@ export const ourFileRouter = {
           const response = await fetch(`https://utfs.io/f/${file.key}`);
           const blob = await response.blob();
 
-          const loader = new PDFLoader(blob);
+          let loader;
+          switch (metadata.fileType) {
+            case "application/pdf": {
+              loader = new PDFLoader(blob);
+              break;
+            }
+            case "text/plain":
+            case "application/rtf": {
+              loader = new TextLoader(blob);
+              break;
+            }
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            case "application/msword": {
+              loader = new DocxLoader(blob);
+              break;
+            }
+            default:
+              throw new Error("Unknown file type");
+          }
+
           const pageLevelDocs = await loader.load();
-
           const pagesAmt = pageLevelDocs.length;
-
           const pineconeIndex = pinecone.Index("aide");
 
           // add metadata
