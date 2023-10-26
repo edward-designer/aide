@@ -42,6 +42,8 @@ export const ourFileRouter = {
       //onUploadComplete must NOT use async function on Vercel
       let thisFileType: fileType = fileType.PDF;
       switch (metadata.fileType) {
+        case "application/pdf":
+          break;
         case "text/plain":
         case "application/rtf": {
           thisFileType = fileType.TEXT;
@@ -75,6 +77,8 @@ export const ourFileRouter = {
           let loader;
           switch (metadata.fileType) {
             case "application/pdf": {
+              loader = new PDFLoader(blob);
+              break;
             }
             case "text/plain":
             case "application/rtf": {
@@ -87,7 +91,7 @@ export const ourFileRouter = {
               break;
             }
             default:
-              throw new Error("Unknown file typ:" + metadata.fileType);
+              throw new Error("Unknown file type:" + metadata.fileType);
           }
 
           const pageLevelDocs = await loader.load();
