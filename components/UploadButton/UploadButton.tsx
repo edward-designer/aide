@@ -33,7 +33,7 @@ const UploadButton = ({ isSubscribed = false }: TUploadButton) => {
             e.preventDefault();
           }}
         >
-          <UploadDropZone />
+          <UploadDropZone isSubscribed={isSubscribed} />
         </DialogContent>
       </Dialog>
     </>

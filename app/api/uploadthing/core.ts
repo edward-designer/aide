@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-
+import { fileType } from "@prisma/client";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { TextLoader } from "langchain/document_loaders/fs/text";
@@ -40,6 +40,22 @@ export const ourFileRouter = {
     })
     .onUploadComplete(({ metadata, file }) => {
       //onUploadComplete must NOT use async function on Vercel
+      let thisFileType: fileType = fileType.PDF;
+      switch (metadata.fileType) {
+        case "text/plain":
+        case "application/rtf": {
+          thisFileType = fileType.TEXT;
+          break;
+        }
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        case "application/msword": {
+          thisFileType = fileType.WORD;
+          break;
+        }
+        default:
+          throw new Error("Unknown file type");
+      }
+
       const handleFile = async () => {
         const createdFile = await db.file.create({
           data: {
@@ -48,6 +64,7 @@ export const ourFileRouter = {
             userId: metadata.userId,
             url: `https://utfs.io/f/${file.key}`,
             uploadStatus: "PROCESSING",
+            fileType: thisFileType,
           },
         });
 

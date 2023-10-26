@@ -32,11 +32,18 @@ enum uploadStatus {
     SUCCESS
 }
 
+enum fileType {
+    PDF
+    TEXT
+    WORD
+}
+
 model File {
     id           String       @id @default(cuid())
     name         String
     uploadStatus uploadStatus @default(PENDING)
     url          String
+    fileType     fileType     @default(PDF)
     key          String       @unique
     createdAt    DateTime     @default(now())
     updatedAt    DateTime     @updatedAt

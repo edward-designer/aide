@@ -5,8 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
 import robotPic from "@/public/ai.jpeg";
-import previewPic from "@/public/dashboard-preview.jpg";
-import uploadPic from "@/public/file-upload-preview.jpg";
+import previewPic from "@/public/landing.gif";
+import uploadPic from "@/public/react.gif";
 
 import LottieAnimation from "@/components/others/LottieAnimation";
 import signUp from "@/public/signup.json";
