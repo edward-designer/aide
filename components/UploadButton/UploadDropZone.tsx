@@ -7,6 +7,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "../ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
+import { title } from "process";
 
 export const UploadDropZone = () => {
   const router = useRouter();
@@ -19,8 +20,14 @@ export const UploadDropZone = () => {
     onSuccess: (file) => {
       router.push(`/dashboard/${file.id}`);
     },
-    retry: true,
+    retry: 10,
     retryDelay: 500,
+    onError: (error) =>
+      toast({
+        title: "Error Uploading File",
+        description: "Sorry, please try again.",
+        variant: "destructive",
+      }),
   });
 
   const onDrop = async (acceptedFiles: File[]) => {
