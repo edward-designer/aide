@@ -75,8 +75,6 @@ export const ourFileRouter = {
           let loader;
           switch (metadata.fileType) {
             case "application/pdf": {
-              loader = new PDFLoader(blob);
-              break;
             }
             case "text/plain":
             case "application/rtf": {
@@ -89,7 +87,7 @@ export const ourFileRouter = {
               break;
             }
             default:
-              throw new Error("Unknown file type");
+              throw new Error("Unknown file typ:" + metadata.fileType);
           }
 
           const pageLevelDocs = await loader.load();
