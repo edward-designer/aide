@@ -72,25 +72,26 @@ export const ourFileRouter = {
         });
 
         try {
+          const response = await fetch(`https://utfs.io/f/${file.key}`);
+
           let loader: PDFLoader | TextLoader | DocxLoader;
           switch (metadata.fileType) {
             case "application/pdf": {
-              const response = await fetch(`https://utfs.io/f/${file.key}`);
               const blob = await response.blob();
               loader = new PDFLoader(blob);
               break;
             }
             case "text/plain":
             case "application/rtf": {
-              const response = await fetch(`https://utfs.io/f/${file.key}`);
               const blob = await response.blob();
               loader = new TextLoader(blob);
               break;
             }
             case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             case "application/msword": {
+              const arrayBuffer = await response.arrayBuffer();
               const result = await mammoth.extractRawText({
-                path: `https://utfs.io/f/${file.key}`,
+                arrayBuffer,
               });
               const str = result.value;
               const blob = new Blob([str], { type: "plain/text" });
