@@ -78,7 +78,7 @@ STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 ```
 
-1. Set up the database
+3. Set up the database
 
 ```
 pnpm generate
