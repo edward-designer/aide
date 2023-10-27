@@ -73,7 +73,7 @@ export const ourFileRouter = {
 
         try {
           const response = await fetch(`https://utfs.io/f/${file.key}`);
-          console.log("fetch");
+          console.warn("fetch");
           let loader: PDFLoader | TextLoader | DocxLoader;
           switch (metadata.fileType) {
             case "application/pdf": {
@@ -89,11 +89,11 @@ export const ourFileRouter = {
             }
             case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             case "application/msword": {
-              console.log("word");
+              console.warn("word");
               const arrayBuffer = await response.arrayBuffer();
-              console.log("arraybuffer");
+              console.warn("arraybuffer");
               const buffer = Buffer.from(arrayBuffer);
-              console.log("buffer");
+              console.warn("buffer");
               const result = await mammoth.extractRawText({
                 buffer,
               });
@@ -136,7 +136,7 @@ export const ourFileRouter = {
             },
           });
         } catch (err) {
-          console.log(err);
+          console.warn(err);
           await db.file.update({
             data: {
               uploadStatus: "FAILED",
@@ -147,7 +147,7 @@ export const ourFileRouter = {
           });
         }
       };
-      handleFile().catch((err) => console.log(err));
+      handleFile().catch((err) => console.warn(err));
     }),
 } satisfies FileRouter;
 
