@@ -5,6 +5,7 @@ import useLoggedIn from "@/hook/useLoggedIn";
 import { notFound } from "next/navigation";
 import WordRenderer from "@/components/WordRenderer/WordRenderer";
 import TextRenderer from "@/components/TextRenderer/TextRenderer";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 interface TPage {
   params: { fileId: string };
@@ -14,6 +15,8 @@ const Page = async ({ params }: TPage) => {
   const { fileId } = params;
 
   const user = await useLoggedIn(`dashboard/${fileId}`);
+
+  const subscriptionPlan = await getUserSubscriptionPlan();
 
   const file = await db.file.findFirst({
     where: {
@@ -39,7 +42,11 @@ const Page = async ({ params }: TPage) => {
           </div>
         </div>
         <div className="shrink-0 flex-[0.75] border-t lg:w-96 lg:border-l lg:border-t-0">
-          <ChatWrapper fileId={fileId} userId={user.id} />
+          <ChatWrapper
+            fileId={fileId}
+            userId={user.id}
+            isSubscribed={subscriptionPlan.isSubscribed}
+          />
         </div>
       </section>
     </main>
