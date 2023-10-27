@@ -22,7 +22,9 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
     PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))!.size ??
     4;
 
-  const { startUpload } = useUploadThing("docUploader");
+  const { startUpload } = useUploadThing(
+    isSubscribed ? "proPlanUploader" : "freePlanUploader"
+  );
   const { toast } = useToast();
   const { mutate: startPolling } = trpc.getFile.useMutation({
     onSuccess: (file) => {

@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -30,4 +31,48 @@ export function getFileType(filename: string): SupportedFileTypes {
       return "text";
   }
   throw new Error("File type not supported");
+}
+
+export function constructMetadata({
+  title = "AIDe - AI Document Chat Service",
+  description = "AIDe is your 24/7 personal assistant, allowing you to chat with any documents using latest AI technology. Simply upload your file and start asking questions right away!",
+  image = "/preview.jpg",
+  icons = "/favicon.ico",
+  noIndex = false,
+}: {
+  title?: string;
+  description?: string;
+  image?: string;
+  icons?: string;
+  noIndex?: boolean;
+} = {}): Metadata {
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: image,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+      creator: "@edwebdeveloper",
+    },
+    icons,
+    metadataBase: new URL("https://aideuk.vercel.app"),
+    themeColor: "#FFF",
+    ...(noIndex && {
+      robots: {
+        index: false,
+        follow: false,
+      },
+    }),
+  };
 }

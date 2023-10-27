@@ -1,25 +1,20 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Inter } from "next/font/google";
 
-import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
-import { Toaster } from "@/components/ui/toaster";
 import UserAction from "@/components/UserMenu";
+import { Toaster } from "@/components/ui/toaster";
+import { cn, constructMetadata } from "@/lib/utils";
 
-import "./globals.css";
-import "react-loading-skeleton/dist/skeleton.css";
 import UserAccountNav from "@/components/UserAccountNav/UserAccountNav";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import "react-loading-skeleton/dist/skeleton.css";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "AIDe - AI Document Chat Service",
-  description:
-    "AIDe is your 24/7 personal assistant, allowing you to chat with any documents using latest AI technology. Simply upload your file and start asking questions right away!",
-};
+export const metadata = constructMetadata();
 
 export default function RootLayout({
   children,
