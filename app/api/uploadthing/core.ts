@@ -73,7 +73,7 @@ export const ourFileRouter = {
 
         try {
           const response = await fetch(`https://utfs.io/f/${file.key}`);
-
+          console.log("fetch");
           let loader: PDFLoader | TextLoader | DocxLoader;
           switch (metadata.fileType) {
             case "application/pdf": {
@@ -89,12 +89,15 @@ export const ourFileRouter = {
             }
             case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             case "application/msword": {
+              console.log("word");
               const arrayBuffer = await response.arrayBuffer();
+              console.log("arraybuffer");
+              const buffer = Buffer.from(arrayBuffer);
+              console.log("buffer");
               const result = await mammoth.extractRawText({
-                arrayBuffer,
+                buffer,
               });
               const str = result.value;
-              throw new Error(str);
               const blob = new Blob([str], { type: "plain/text" });
               loader = new TextLoader(blob);
               break;

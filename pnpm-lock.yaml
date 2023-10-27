@@ -74,6 +74,9 @@ dependencies:
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
+  docx-preview:
+    specifier: ^0.1.20
+    version: 0.1.20
   langchain:
     specifier: ^0.0.170
     version: 0.0.170(@pinecone-database/pinecone@1.1.1)(mammoth@1.6.0)(pdf-parse@1.1.1)
@@ -2308,6 +2311,12 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /docx-preview@0.1.20:
+    resolution: {integrity: sha512-YfmRI6wdq5n2uh7Oi6Gk7FszDV+OysA6Gs5ZoLmSZPJrTOrgUmiEVZ87iJDAUxNIJENua/Tj7H7IYmpNEbFzlw==}
+    dependencies:
+      jszip: 3.10.1
+    dev: false
 
   /duck@0.1.12:
     resolution: {integrity: sha512-wkctla1O6VfP89gQ+J/yDesM0S7B7XLXjKGzXxMDVFg7uEn706niAtyYovKbyq1oT9YwDcly721/iUWoc8MVRg==}
