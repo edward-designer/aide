@@ -7,6 +7,7 @@ import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { TextLoader } from "langchain/document_loaders/fs/text";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { RecursiveUrlLoader } from "langchain/document_loaders/web/recursive_url";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { pinecone } from "@/lib/pinecone";
 import { z } from "zod";

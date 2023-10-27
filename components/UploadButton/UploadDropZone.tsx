@@ -28,6 +28,7 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
     onSuccess: (file) => {
       if (file) router.push(`/dashboard/${file.id}`);
     },
+    onError: (error) => {},
     retry: 10,
     retryDelay: 1000,
   });
@@ -38,14 +39,14 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
       acceptedFiles[0].type !== "application/pdf" &&
       acceptedFiles[0].type !==
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
-      acceptedFiles[0].type !== "application/msword" &&
+      /*acceptedFiles[0].type !== "application/msword" &&*/
       acceptedFiles[0].type !== "text/plain" &&
       acceptedFiles[0].type !== "application/rtf"
     ) {
       setUploadFile(null);
       return toast({
-        title: "AIDe loves PDF",
-        description: "Sorry, currently only PDF files are allowed.",
+        title: "AIDe loves PDF/DOCX/TXT",
+        description: "Sorry, currently only PDF/DOCX/TXT files are allowed.",
         variant: "destructive",
       });
     }
@@ -119,7 +120,7 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
               {!uploadCompleted ? (
                 <>
                   <strong>Drag & Drop</strong> OR <strong>Click</strong> to
-                  Upload
+                  Upload a PDF/DOCX/TXT File
                   <br />
                   (size limit: up to {sizeLimit} MB)
                 </>
