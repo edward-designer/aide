@@ -94,6 +94,7 @@ export const ourFileRouter = {
                 arrayBuffer,
               });
               const str = result.value;
+              console.log(str);
               const blob = new Blob([str], { type: "plain/text" });
               loader = new TextLoader(blob);
               break;

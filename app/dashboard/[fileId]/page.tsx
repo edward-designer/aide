@@ -34,7 +34,7 @@ const Page = async ({ params }: TPage) => {
     <main className="flex-1 justify-between flex flex-col">
       <section className="mx-auto w-full max-w-8xl grow lg:flex xl:px-sm">
         <div className="flex-1 xl:flex">
-          <div className="px-md py-md sm:px-lg lg:pl-lg xl:flex-1 xl:pl-lg">
+          <div className="flex-1 h-full px-md py-md sm:px-lg lg:pl-lg xl:flex-1 xl:pl-lg">
             {renderer[file.fileType]}
           </div>
         </div>
