@@ -3,6 +3,7 @@ import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { trpc } from "@/app/_trpc/client";
 import { INFINITE_QUERY_LIMIT } from "@/config/infinite-query";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
 
 interface StreamResponse {
   addMessage: () => void;
@@ -24,7 +25,7 @@ interface TChatContextProvider {
   children: ReactNode;
 }
 
-export const ChatContextProvider = ({
+export const ChatContextProvider = async ({
   fileId,
   userId,
   children,
@@ -33,6 +34,8 @@ export const ChatContextProvider = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const utils = trpc.useUtils();
+
+  const subscriptionPlan = await getUserSubscriptionPlan();
 
   const { toast } = useToast();
 

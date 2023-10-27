@@ -110,7 +110,7 @@ const onSuccessHandler = ({
       if (pagesAmt > allowedAmt)
         await db.file.update({
           data: {
-            uploadStatus: "FAILED",
+            uploadStatus: "EXCEEDED",
           },
           where: {
             id: createdFile.id,

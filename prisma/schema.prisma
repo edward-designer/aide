@@ -30,6 +30,7 @@ enum uploadStatus {
     PROCESSING
     FAILED
     SUCCESS
+    EXCEEDED
 }
 
 enum fileType {

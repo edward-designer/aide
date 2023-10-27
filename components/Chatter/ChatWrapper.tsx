@@ -8,13 +8,15 @@ import Message from "../others/Message";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { ChatContextProvider } from "./ChatContext";
+import { PLANS } from "@/config/stripe";
 
 interface TChatWrapper {
   fileId: string;
+  isSubscribed: boolean;
   userId: string;
 }
 
-const ChatWrapper = ({ fileId, userId }: TChatWrapper) => {
+const ChatWrapper = ({ fileId, isSubscribed, userId }: TChatWrapper) => {
   const { data, error, isLoading } = trpc.getFileStatus.useQuery(
     {
       fileId,
@@ -80,6 +82,35 @@ const ChatWrapper = ({ fileId, userId }: TChatWrapper) => {
         </div>
       </div>
     );
+
+  if (data?.status === "EXCEEDED") {
+    const pageLimit = PLANS.find(
+      (plan) => plan.slug === (isSubscribed ? "pro" : "free")
+    )?.pagePerPdf;
+    const planName = PLANS.find(
+      (plan) => plan.slug === (isSubscribed ? "pro" : "free")
+    )?.name;
+    return (
+      <div className="relative min-h-full bg-primary-foreground flex justify-between gap-xs divide-y divide-text/20 flex-col">
+        <div className="flex-1 flex-centered mb-xl">
+          <div className="flex flex-col items-center gap-2">
+            <Message
+              icon={<XCircle className="h-lg w-lg text-accent/100" />}
+              heading="Too Many To Read."
+              text={`Your ${planName} plan supports up to ${pageLimit} pages per document.`}
+            >
+              <Link
+                href="/dashboard"
+                className={buttonVariants({ variant: "secondary" })}
+              >
+                Back to dashboard.
+              </Link>
+            </Message>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ChatContextProvider fileId={fileId} userId={userId}>
