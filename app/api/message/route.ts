@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
 
   const response = await openAi.chat.completions.create({
     model: "gpt-3.5-turbo",
-    temperature: 0,
+    temperature: 0.1, // 0 - 2 higher more random answers
     stream: true,
     messages: [
       {

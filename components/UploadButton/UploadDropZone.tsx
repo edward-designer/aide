@@ -28,7 +28,6 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
     onSuccess: (file) => {
       if (file) router.push(`/dashboard/${file.id}`);
     },
-    onError: (error) => {},
     retry: 10,
     retryDelay: 1000,
   });
@@ -82,7 +81,11 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
       });
     }
     setUploadCompleted(true);
-    startPolling({ key });
+    try {
+      startPolling({ key });
+    } catch (e) {
+      // wait
+    }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
