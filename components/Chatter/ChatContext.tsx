@@ -24,7 +24,7 @@ interface TChatContextProvider {
   children: ReactNode;
 }
 
-export const ChatContextProvider = async ({
+export const ChatContextProvider = ({
   fileId,
   userId,
   children,

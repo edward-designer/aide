@@ -12,18 +12,26 @@ import { PLANS } from "@/config/stripe";
 
 interface TChatWrapper {
   fileId: string;
-  isSubscribed: boolean;
   userId: string;
+  isSubscribed: boolean;
 }
 
-const ChatWrapper = ({ fileId, isSubscribed, userId }: TChatWrapper) => {
+const ChatWrapper = ({
+  fileId,
+  isSubscribed = false,
+  userId,
+}: TChatWrapper) => {
   const { data, error, isLoading } = trpc.getFileStatus.useQuery(
     {
       fileId,
     },
     {
       refetchInterval: (data) =>
-        data?.status === "SUCCESS" || data?.status === "FAILED" ? false : 500,
+        data?.status === "SUCCESS" ||
+        data?.status === "FAILED" ||
+        data?.status === "EXCEEDED"
+          ? false
+          : 500,
     }
   );
 
