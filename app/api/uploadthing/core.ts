@@ -89,11 +89,9 @@ export const ourFileRouter = {
             }
             case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             case "application/msword": {
-              console.warn("word");
               const arrayBuffer = await response.arrayBuffer();
-              console.warn("arraybuffer");
               const buffer = Buffer.from(arrayBuffer);
-              console.warn("buffer");
+              // mammoth needs buffer input, arrayBuffer will fail silently
               const result = await mammoth.extractRawText({
                 buffer,
               });
@@ -106,7 +104,7 @@ export const ourFileRouter = {
               throw new Error("Unknown file type:" + metadata.fileType);
           }
 
-          const pageLevelDocs = await loader.load();
+          const pageLevelDocs = await loader.loadAndSplit();
           const pagesAmt = pageLevelDocs.length;
           const pineconeIndex = pinecone.Index("aide");
 
