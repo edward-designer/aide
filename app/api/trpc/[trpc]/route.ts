@@ -9,7 +9,6 @@ const handler = (req: Request) =>
     createContext: () => ({}),
     onError: (opts) => {
       const { error } = opts;
-      console.error("Error:", error);
     },
   });
 
