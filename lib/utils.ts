@@ -36,7 +36,7 @@ export function getFileType(filename: string): SupportedFileTypes {
 export function constructMetadata({
   title = "AIDe - AI Document Chat Service",
   description = "AIDe is your 24/7 personal assistant, allowing you to chat with any documents using latest AI technology. Simply upload your file and start asking questions right away!",
-  image = "/preview.jpg",
+  image = "/preview.png",
   icons = "/favicon.ico",
   noIndex = false,
 }: {

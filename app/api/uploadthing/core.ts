@@ -11,7 +11,6 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { pinecone } from "@/lib/pinecone";
 import { z } from "zod";
 import mammoth from "mammoth";
-import { getUserSubscriptionPlan } from "@/lib/stripe";
 import { PLANS } from "@/config/stripe";
 
 const f = createUploadthing();
@@ -22,9 +21,7 @@ const middleware = async ({ input }: { input: { fileType: string } }) => {
   const user = getUser();
   if (!user || !user.id) throw new Error("Unauthenticated");
 
-  const subscriptionPlan = await getUserSubscriptionPlan();
-
-  return { userId: user.id, subscriptionPlan, fileType: input.fileType };
+  return { userId: user.id, fileType: input.fileType };
 };
 
 const onSuccessHandler = ({
@@ -101,7 +98,7 @@ const onSuccessHandler = ({
       const pageLevelDocs = await loader.loadAndSplit();
 
       const pagesAmt = pageLevelDocs.length;
-      const { isSubscribed } = metadata.subscriptionPlan;
+      const isSubscribed = true;
 
       const allowedAmt =
         PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))
