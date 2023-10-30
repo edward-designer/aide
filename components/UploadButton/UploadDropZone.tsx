@@ -21,6 +21,7 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
   const sizeLimit =
     PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))!.size ??
     4;
+  const sizeInBytes = sizeLimit * 1024 * 1024;
 
   const { startUpload } = useUploadThing(
     isSubscribed ? "proPlanUploader" : "freePlanUploader"
@@ -51,7 +52,7 @@ export const UploadDropZone = ({ isSubscribed = false }: TUploadDropZone) => {
         variant: "destructive",
       });
     }
-    if (acceptedFiles[0].size > 4194304) {
+    if (acceptedFiles[0].size > sizeInBytes) {
       setUploadFile(null);
       return toast({
         title: "Oh, it's too large",
