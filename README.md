@@ -25,15 +25,15 @@ This app is based on the [tutorial by Josh](https://github.com/joschan21/quill) 
 - **Visual design**
   - customized branding
   - animated icon / preview / background
-  - loading screens
+  - loading screens - for enhanced perceived responsiveness
 - **Backend**
-  - Handle and process DOCX and TXT files
-  - Vercel edge function
-  - Refactored codes
+  - Handle and process DOCX and TXT files - the original add only process PDF files
+  - Vercel edge function - circumvents the limitations of Vercel free plan
+  - Refactored codes - more readable and maintainable
 - **Bug Fix**
-  - Filter Pinecone db with metadata (Pinecone free plan no longer supports namespace)
-  - React Query did not revalidate
-  - Delete button didn't delete the associated stored file and Pinecone storage
+  - Filter Pinecone db with metadata - Pinecone free plan no longer supports namespace and this broke the whole app
+  - React Query did not revalidate owing to mutation of the original values
+  - Delete button didn't delete the associated stored file and Pinecone storage - the original app leaves out all the files / vectors on the web storage
 
 ## Features of the AIDe App
 
