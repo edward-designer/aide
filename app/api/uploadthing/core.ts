@@ -67,7 +67,6 @@ const onSuccessHandler = ({
 
     try {
       const response = await fetch(`https://utfs.io/f/${file.key}`);
-      console.warn("fetch");
       let loader: PDFLoader | TextLoader | DocxLoader;
       switch (metadata.fileType) {
         case "application/pdf": {
@@ -107,7 +106,8 @@ const onSuccessHandler = ({
         PLANS.find((plan) => plan.slug === (isSubscribed ? "pro" : "free"))
           ?.pagePerPdf ?? 2;
 
-      if (pagesAmt > allowedAmt)
+      console.warn(pagesAmt);
+      if (pagesAmt > allowedAmt) {
         await db.file.update({
           data: {
             uploadStatus: "EXCEEDED",
@@ -116,6 +116,8 @@ const onSuccessHandler = ({
             id: createdFile.id,
           },
         });
+        return;
+      }
 
       const pineconeIndex = pinecone.Index("aide");
 
