@@ -179,7 +179,7 @@ export const ourFileRouter = {
     .middleware(middleware)
     .onUploadComplete(onSuccessHandler),
   proPlanUploader: f({
-    pdf: { maxFileSize: "4MB", maxFileCount: 1 },
+    pdf: { maxFileSize: "16MB", maxFileCount: 1 },
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
       maxFileSize: "16MB",
       maxFileCount: 1,
